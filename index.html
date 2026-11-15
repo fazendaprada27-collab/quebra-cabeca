@@ -3,173 +3,173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Quebra-Cabeça Deslizante — 3x3 e 4x4</title>
-<meta name="theme-color" content="#12122b">
+<title>Quebra-Cabeça Deslizante</title>
+<meta name="theme-color" content="#0b0b1e">
 <link rel="manifest" href="manifest.json">
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#12122b;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-.wrap{max-width:1020px;margin:0 auto;padding:16px 14px 28px}
-header{text-align:center;margin:4px 0 14px}
-header h1{font-size:clamp(22px,4vw,32px);margin:0}
-header p{color:#b9b9d6;font-size:13px;margin:6px 0 0}
-.layout{display:grid;grid-template-columns:1fr;gap:16px;align-items:start}
-@media(min-width:880px){.layout{grid-template-columns:440px 1fr}}
-.card{background:#1e1e42;border-radius:20px;padding:14px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
-.modes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.chip{flex:1;min-width:110px;border:1px solid rgba(255,255,255,.22);background:#12122b;color:#fff;border-radius:999px;padding:8px 6px;font-weight:800;font-size:12px;cursor:pointer}
-.chip.active{background:#ffd93b;color:#1a1a2e;border-color:#ffd93b}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.stat{background:#12122b;border-radius:12px;padding:8px 6px;text-align:center}
-.stat small{display:block;color:#b9b9d6;font-size:10px;letter-spacing:.1em;text-transform:uppercase}
-.stat b{font-size:20px}
-.win{display:none;background:#2ee6a8;color:#06281e;font-weight:900;text-align:center;border-radius:12px;padding:10px;margin-bottom:12px;font-size:14px}
+body{margin:0;background:#0b0b1e;color:#fff;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:10px 12px 12px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 2px 10px}
+.top h1{font-size:17px;margin:0}
+.top button{background:#1c1c38;border:1px solid #2e2e55;color:#fff;border-radius:999px;padding:6px 10px;font-size:11px;cursor:pointer}
+.main{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:860px){.main{grid-template-columns:400px 1fr}}
+.card{background:#151533;border-radius:16px;padding:12px}
+.row{display:flex;gap:6px;flex-wrap:wrap}
+.chip{flex:1;border:1px solid #2e2e55;background:#1c1c38;color:#fff;border-radius:999px;padding:7px 4px;font-size:12px;font-weight:800;cursor:pointer;text-align:center}
+.chip.on{background:#ffd93b;color:#1a1a2e;border-color:#ffd93b}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0}
+.stat{background:#0b0b1e;border-radius:10px;padding:6px;text-align:center}
+.stat small{display:block;color:#9a9ac2;font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.stat b{font-size:17px}
+.win{display:none;background:#2ee6a8;color:#06281e;font-weight:900;text-align:center;border-radius:10px;padding:7px;font-size:13px;margin-bottom:8px}
 .win.show{display:block}
-.board{display:grid;gap:7px;width:100%;max-width:400px;margin:0 auto}
+.board{display:grid;gap:5px;width:100%;max-width:340px;margin:0 auto}
 .board.n3{grid-template-columns:repeat(3,1fr)}
 .board.n4{grid-template-columns:repeat(4,1fr)}
-.tile{aspect-ratio:1;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;color:#1a1a2e;cursor:pointer;border:0;user-select:none}
-.tile.n3{font-size:clamp(26px,7vw,34px)}
-.tile.n4{font-size:clamp(18px,5vw,24px)}
-.tile.empty{background:transparent;border:2px dashed rgba(255,255,255,.25);cursor:default}
-.tile.photo{background-image:url('foto.jpg');background-size:400% 400%;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.9);font-size:14px}
-.board.n3 .tile.photo{background-size:300% 300%}
-.board.n4 .tile.photo{background-size:400% 400%}
-.tile.photo span{background:rgba(0,0,0,.55);padding:2px 6px;border-radius:999px;font-size:11px}
-.c1{background:#ff6b9d}.c2{background:#ffb020}.c3{background:#2ed9b5}.c4{background:#6a9dff}.c5{background:#b77dff}.c6{background:#ff7a4d}.c7{background:#4ddb6a}.c8{background:#ffd93b}.c9{background:#ff8fab}.c10{background:#4ecdc4}.c11{background:#a78bfa}.c12{background:#f97316}.c13{background:#22c55e}.c14{background:#38bdf8}.c15{background:#facc15}
-.controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;max-width:400px;margin:12px auto 0}
-.btn{border:0;border-radius:12px;padding:11px 8px;font-weight:900;cursor:pointer;font-size:13px}
-.btn-yellow{background:#ffd93b;color:#1a1a2e}
-.btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3)}
-.hint{text-align:center;color:#b9b9d6;font-size:11px;margin-top:10px;line-height:1.5}
-.preview{display:flex;gap:10px;align-items:center;background:#12122b;border-radius:12px;padding:10px;margin-top:12px}
-.preview img{width:58px;height:58px;object-fit:cover;border-radius:10px;border:2px solid #fff}
-.preview p{margin:0;font-size:12px;color:#d8d8ee;line-height:1.4}
-.preview b{color:#fff}
-.side{display:grid;gap:14px}
-.box{background:#1e1e42;border-radius:18px;padding:16px}
-.box h2{margin:0 0 8px;font-size:17px}
-.box p,.box li{font-size:13.5px;line-height:1.6;color:#d8d8ee}
-.box ul{margin:8px 0;padding-left:18px}
-.highlight{background:#ffd93b;color:#1a1a2e;border-radius:18px;padding:16px}
-.highlight h2{margin:0 0 8px;font-size:18px}
-.highlight p,.highlight li{color:#1a1a2e;font-size:13.5px;line-height:1.55}
-.highlight ul{margin:8px 0;padding-left:18px}
-.badge{display:inline-block;background:#2ee6a8;color:#06281e;font-weight:900;font-size:11px;padding:4px 8px;border-radius:999px;margin-bottom:8px}
+.board.n5{grid-template-columns:repeat(5,1fr)}
+.tile{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;border:0;cursor:pointer}
+.tile.n3{font-size:26px}.tile.n4{font-size:19px}.tile.n5{font-size:15px}
+.tile.empty{background:transparent;border:2px dashed rgba(255,255,255,.22);cursor:default}
+.tile.photo{background-size:cover;color:#fff;text-shadow:0 1px 4px #000}
+.tile.photo span{background:rgba(0,0,0,.55);padding:1px 5px;border-radius:999px;font-size:10px}
+.tile.correct{outline:2px solid #2ee6a8;outline-offset:-2px}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px;max-width:340px;margin-left:auto;margin-right:auto}
+.btn{border:0;border-radius:10px;padding:9px 6px;font-weight:900;cursor:pointer;font-size:12px}
+.btn-y{background:#ffd93b;color:#1a1a2e}
+.btn-g{background:transparent;color:#fff;border:1px solid #33335a}
+.hint{text-align:center;color:#9a9ac2;font-size:10px;margin-top:8px;line-height:1.4}
+.side{display:grid;gap:10px;align-content:start}
+.panel{background:#151533;border-radius:14px;padding:11px}
+.panel h3{margin:0 0 6px;font-size:13px}
+.progress{height:7px;background:#0b0b1e;border-radius:999px;overflow:hidden}
+.progress i{display:block;height:100%;background:#2ee6a8;width:0%}
+.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.thumbs button{border:2px solid transparent;border-radius:10px;overflow:hidden;padding:0;cursor:pointer;background:#000;height:52px}
+.thumbs button.on{border-color:#ffd93b}
+.thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.thumbs .up{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;font-size:10px;background:#1c1c38;height:100%}
+.toggles{display:grid;gap:7px;font-size:12px;color:#d8d8ee}
+.toggles label{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.switch{width:36px;height:20px;background:#33335a;border-radius:999px;position:relative;cursor:pointer;flex-shrink:0}
+.switch::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;background:#fff;border-radius:50%;transition:.15s}
+.switch.on{background:#2ee6a8}
+.switch.on::after{left:18px}
+.how{font-size:12px;line-height:1.5;color:#d8d8ee;margin:0;padding-left:16px}
+.how li{margin-bottom:2px}
+.preview{display:flex;gap:8px;align-items:center}
+.preview img{width:44px;height:44px;object-fit:cover;border-radius:8px}
+.preview p{margin:0;font-size:11px;color:#b9b9d6;line-height:1.35}
 </style>
 </head>
 <body>
 <div class="wrap">
-<header><h1>🧩 Quebra-Cabeça Deslizante</h1><p>Monte a imagem ou coloque os números em ordem. Você consegue?</p></header>
-<div class="layout">
+<div class="top"><h1>🧩 Quebra-Cabeça Deslizante</h1><button id="soundBtn">🔊 Som ativo</button></div>
+<div class="main">
 <section class="card">
-  <div class="modes">
-    <button class="chip active" id="btn3">3x3 • FÁCIL</button>
-    <button class="chip" id="btn4">4x4 • DESAFIO</button>
-  </div>
-  <div class="modes">
-    <button class="chip active" id="btnNum">🔢 NÚMEROS</button>
-    <button class="chip" id="btnFoto">🖼️ FOTO</button>
+  <div class="row">
+    <button class="chip on" data-size="3">3x3</button>
+    <button class="chip" data-size="4">4x4</button>
+    <button class="chip" data-size="5">5x5</button>
+    <button class="chip" data-mode="num">🔢 Números</button>
+    <button class="chip on" data-mode="foto">🖼️ Foto</button>
   </div>
   <div class="stats">
     <div class="stat"><small>Jogadas</small><b id="moves">0</b></div>
     <div class="stat"><small>Tempo</small><b id="time">00:00</b></div>
-    <div class="stat"><small>Melhor</small><b id="best">—</b></div>
+    <div class="stat"><small>Recorde</small><b id="best">—</b></div>
   </div>
   <div id="win" class="win"></div>
   <div class="board n3" id="board"></div>
   <div class="controls">
-    <button class="btn btn-yellow" id="shuffleBtn">🔀 EMBARALHAR</button>
-    <button class="btn btn-ghost" id="resetBtn">↻ NOVO JOGO</button>
+    <button class="btn btn-y" id="shuffleBtn">🔀 EMBARALHAR</button>
+    <button class="btn btn-g" id="resetBtn">↻ NOVO JOGO</button>
   </div>
-  <div class="hint">✨ Toque só na peça ao lado do espaço vazio<br>⌨️ No computador, use as setas do teclado</div>
-  <div class="preview" id="previewBox"><img src="foto.jpg" alt="Foto do quebra-cabeça"><p><b>Objetivo no modo foto:</b> monte a foto da praia. O quadradinho vazio é o último pedaço.<br><span style="color:#ffd93b">Dica: comece pela primeira fileira.</span></p></div>
+  <div class="hint">Toque só na peça ao lado do vazio • Setas do teclado também funcionam</div>
 </section>
 
 <aside class="side">
-  <div class="highlight">
-    <span class="badge">🔥 NOVO: AGORA TEM 4x4 E MODO FOTO</span>
-    <h2>Qual é o desafio?</h2>
-    <p><b>3x3:</b> para aquecer, aprender e bater seu recorde. Ideal para jogar rapidinho.</p>
-    <p><b>4x4:</b> 15 peças, muito mais difícil. Só quem pensa com calma consegue. Você consegue vencer em menos de 100 jogadas?</p>
-    <p><b>Modo Foto:</b> em vez de números, você monta uma foto. É mais difícil porque não tem número para guiar — você tem que olhar o desenho.</p>
+  <div class="panel">
+    <h3>Progresso <span id="progText" style="float:right;color:#2ee6a8;font-size:11px">0% • 0/N</span></h3>
+    <div class="progress"><i id="progBar"></i></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+      <span style="font-size:12px">Escolha a imagem</span>
+      <button id="peekBtn" style="background:#1c1c38;color:#fff;border:1px solid #33335a;border-radius:999px;padding:4px 8px;font-size:11px;cursor:pointer">👁️ Espiar foto</button>
+    </div>
+    <div class="thumbs" style="margin-top:8px">
+      <button class="on" data-img="foto1.jpg"><img src="foto1.jpg" alt="Praia"></button>
+      <button data-img="foto2.jpg"><img src="foto2.jpg" alt="Montanha"></button>
+      <button data-img="foto3.jpg"><img src="foto3.jpg" alt="Vila"></button>
+      <label style="border:2px dashed #33335a;border-radius:10px;height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;cursor:pointer">⬆️ Sua foto<input type="file" id="upload" accept="image/*" style="display:none"></label>
+    </div>
+    <div class="preview" style="margin-top:8px"><img id="previewImg" src="foto1.jpg"><p><b id="imgName">Praia Tropical</b><br><span id="imgHint">Céu em cima, mar à direita, areia embaixo</span></p></div>
+    <div class="toggles" style="margin-top:10px">
+      <label>✅ Destacar peças no lugar certo <span class="switch on" id="hlSwitch"></span></label>
+      <label>🔢 Mostrar números guia nas peças <span class="switch" id="numSwitch"></span></label>
+    </div>
   </div>
-  <div class="box"><h2>🎯 Como jogar</h2>
-    <ul>
-      <li><b>1.</b> Escolha 3x3 ou 4x4, e Números ou Foto</li>
-      <li><b>2.</b> Clique em <b>EMBARALHAR</b></li>
-      <li><b>3.</b> Toque em uma peça ao lado do espaço vazio para mover</li>
-      <li><b>4.</b> Deixe tudo em ordem: 1, 2, 3... ou a foto completa</li>
-    </ul>
-    <p>Quanto menos jogadas e menos tempo, melhor!</p>
-  </div>
-  <div class="box"><h2>💡 3 dicas para vencer mais rápido</h2>
-    <ul>
-      <li><b>Não mexa no que já está certo.</b> Se a primeira fileira já está 1-2-3, deixe ela quieta.</li>
-      <li><b>Resolva por partes.</b> Primeiro a fileira de cima, depois a do meio, depois a de baixo.</li>
-      <li><b>No modo foto, olhe as bordas.</b> Céu em cima, areia embaixo, mar do lado direito.</li>
-    </ul>
-  </div>
-  <div class="box"><h2>🏆 Seu recorde</h2><p id="recordText">Seu melhor fica salvo aqui enquanto a página estiver aberta. Jogue de novo para tentar bater seu recorde!</p><p style="font-size:12px;color:#b9b9d6">Exemplo: no 3x3, um bom jogador faz em 30 a 50 jogadas. No 4x4, abaixo de 120 jogadas já é muito bom.</p></div>
+  <div class="panel"><h3>Como jogar</h3><ol class="how"><li>Escolha a grade (3x3, 4x4 ou 5x5) e o modo Números ou Foto.</li><li>Clique em EMBARALHAR.</li><li>Mova só a peça ao lado do espaço vazio até deixar tudo em ordem.</li></ol></div>
 </aside>
 </div>
 </div>
 <script>
-let size=3, mode='num';
+let size=3, mode='foto', img='foto1.jpg', highlight=true, showNum=false, sound=true;
 let tiles=[], moves=0, seconds=0, timer=null, started=false, best=null;
 const boardEl=document.getElementById('board');
-const movesEl=document.getElementById('moves');
-const timeEl=document.getElementById('time');
-const bestEl=document.getElementById('best');
-const winEl=document.getElementById('win');
-const colors=['','c1','c2','c3','c4','c5','c6','c7','c8','c9','c10','c11','c12','c13','c14','c15'];
+const names={'foto1.jpg':['Praia Tropical','Céu em cima, mar à direita, areia embaixo'],'foto2.jpg':['Lago na Montanha','Neve em cima, lago embaixo'],'foto3.jpg':['Vila no Mar','Casinhas coloridas, mar à direita'],'custom':['Sua foto','Sua foto escolhida']};
+const colors=['','c1','c2','c3','c4','c5','c6','c7','c8','c9','c10','c11','c12','c13','c14','c15','c16','c17','c18','c19','c20','c21','c22','c23','c24'];
 function total(){return size*size}
-function solvedArr(){let a=[];for(let i=1;i<total();i++)a.push(i);a.push(0);return a}
+function solved(){let a=[];for(let i=1;i<total();i++)a.push(i);a.push(0);return a}
 function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
-function startTimer(){if(started)return;started=true;timer=setInterval(()=>{seconds++;timeEl.textContent=fmt(seconds)},1000)}
+function startTimer(){if(started)return;started=true;timer=setInterval(()=>{seconds++;document.getElementById('time').textContent=fmt(seconds)},1000)}
 function stopTimer(){clearInterval(timer)}
+function play(){if(!sound)return;try{const a=new (window.AudioContext||window.webkitAudioContext)();const o=a.createOscillator();o.frequency.value=520;o.connect(a.destination);o.start();o.stop(a.currentTime+0.05)}catch(e){}}
 function render(){
-  boardEl.className='board '+(size===3?'n3':'n4');
+  boardEl.className='board n'+size;
   boardEl.innerHTML='';
+  let correct=0;
   tiles.forEach((v,i)=>{
+    if(v!==0 && v===i+1) correct++;
     const b=document.createElement('button');
-    const row=Math.floor((v===0?total()-1:v-1)/size), col=(v===0?total()-1:v-1)%size;
-    if(mode==='photo' && v!==0){
-      b.className='tile photo '+(size===3?'n3':'n4');
+    const row=v===0?size-1:Math.floor((v-1)/size), col=v===0?size-1:(v-1)%size;
+    let cls='tile n'+size+' ';
+    if(v===0) cls+='empty';
+    else if(mode==='foto') cls+='photo';
+    else cls+=colors[v]||'c1';
+    if(highlight && v!==0 && v===i+1) cls+=' correct';
+    b.className=cls;
+    if(mode==='foto' && v!==0){
+      b.style.backgroundImage=`url('${img}')`;
+      b.style.backgroundSize=`${size*100}% ${size*100}%`;
       b.style.backgroundPosition=`${col*100/(size-1)}% ${row*100/(size-1)}%`;
-      b.innerHTML=`<span>${v}</span>`;
-    } else {
-      b.className='tile '+(v===0?'empty':colors[v])+' '+(size===3?'n3':'n4');
-      b.textContent=v===0?'':v;
-    }
+      if(showNum) b.innerHTML=`<span>${v}</span>`;
+    } else if(v!==0) b.textContent=v;
     b.onclick=()=>tryMove(i);
     boardEl.appendChild(b);
   });
-  movesEl.textContent=moves; timeEl.textContent=fmt(seconds); bestEl.textContent=best===null?'—':best;
+  document.getElementById('moves').textContent=moves;
+  document.getElementById('time').textContent=fmt(seconds);
+  document.getElementById('best').textContent=best===null?'—':best;
+  const pct=Math.round(correct/(total()-1)*100);
+  document.getElementById('progBar').style.width=pct+'%';
+  document.getElementById('progText').textContent=`${pct}% • ${correct}/${total()-1}`;
 }
-function canMove(i){const e=tiles.indexOf(0);const r=Math.floor(i/size),c=i%size,er=Math.floor(e/size),ec=e%size;return Math.abs(r-er)+Math.abs(c-ec)===1}
-function tryMove(i){if(!canMove(i))return;startTimer();const e=tiles.indexOf(0);[tiles[i],tiles[e]]=[tiles[e],tiles[i]];moves++;render();checkWin()}
-function checkWin(){const s=solvedArr();if(s.every((v,i)=>tiles[i]===v)){stopTimer();winEl.textContent=`Parabéns! Você venceu em ${moves} jogadas!`;winEl.classList.add('show');if(best===null||moves<best){best=moves;bestEl.textContent=best;}}}
-function shuffle(){
-  tiles=solvedArr();let last=-1;
-  for(let k=0;k<(size===3?80:200);k++){
-    const e=tiles.indexOf(0);
-    const opts=[e-size,e+size,e-1,e+1].filter(n=>n>=0&&n<total()&&n!==last&&!((e%size===0&&n===e-1)||(e%size===size-1&&n===e+1)));
-    const pick=opts[Math.floor(Math.random()*opts.length)];
-    [tiles[pick],tiles[e]]=[tiles[e],tiles[pick]];last=e;
-  }
-  if(tiles.every((v,i)=>v===solvedArr()[i])) shuffle();
-  moves=0;seconds=0;started=false;stopTimer();winEl.classList.remove('show');render();
-}
-function reset(){tiles=solvedArr();moves=0;seconds=0;started=false;stopTimer();winEl.classList.remove('show');render()}
-function setSize(n){size=n;best=null;document.getElementById('btn3').classList.toggle('active',n===3);document.getElementById('btn4').classList.toggle('active',n===4);reset()}
-function setMode(m){mode=m;document.getElementById('btnNum').classList.toggle('active',m==='num');document.getElementById('btnFoto').classList.toggle('active',m==='photo');render()}
-document.getElementById('btn3').onclick=()=>setSize(3);
-document.getElementById('btn4').onclick=()=>setSize(4);
-document.getElementById('btnNum').onclick=()=>setMode('num');
-document.getElementById('btnFoto').onclick=()=>setMode('photo');
+function canMove(i){const e=tiles.indexOf(0);return Math.abs(Math.floor(i/size)-Math.floor(e/size))+Math.abs(i%size-e%size)===1}
+function tryMove(i){if(!canMove(i))return;startTimer();const e=tiles.indexOf(0);[tiles[i],tiles[e]]=[tiles[e],tiles[i]];moves++;play();render();checkWin()}
+function checkWin(){const s=solved();if(s.every((v,i)=>tiles[i]===v)){stopTimer();const w=document.getElementById('win');w.textContent=`Parabéns! Você venceu em ${moves} jogadas!`;w.classList.add('show');if(best===null||moves<best){best=moves;document.getElementById('best').textContent=best}}}
+function shuffle(){tiles=solved();let last=-1;const steps=size===3?80:size===4?180:300;for(let k=0;k<steps;k++){const e=tiles.indexOf(0);const opts=[e-size,e+size,e-1,e+1].filter(n=>n>=0&&n<total()&&n!==last&&!((e%size===0&&n===e-1)||(e%size===size-1&&n===e+1)));const p=opts[Math.floor(Math.random()*opts.length)];[tiles[p],tiles[e]]=[tiles[e],tiles[p]];last=e}if(tiles.every((v,i)=>v===solved()[i]))shuffle();moves=0;seconds=0;started=false;stopTimer();document.getElementById('win').classList.remove('show');render()}
+function reset(){tiles=solved();moves=0;seconds=0;started=false;stopTimer();document.getElementById('win').classList.remove('show');render()}
+document.querySelectorAll('[data-size]').forEach(b=>b.onclick=()=>{size=+b.dataset.size;best=null;document.querySelectorAll('[data-size]').forEach(x=>x.classList.toggle('on',x===b));reset()});
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('on',x===b));render()});
+document.querySelectorAll('[data-img]').forEach(b=>b.onclick=()=>{img=b.dataset.img;document.querySelectorAll('[data-img]').forEach(x=>x.classList.toggle('on',x===b));document.getElementById('previewImg').src=img;document.getElementById('imgName').textContent=names[img][0];document.getElementById('imgHint').textContent=names[img][1];render()});
 document.getElementById('shuffleBtn').onclick=shuffle;
 document.getElementById('resetBtn').onclick=reset;
+document.getElementById('hlSwitch').onclick=e=>{highlight=!highlight;e.target.classList.toggle('on',highlight);render()};
+document.getElementById('numSwitch').onclick=e=>{showNum=!showNum;e.target.classList.toggle('on',showNum);render()};
+document.getElementById('soundBtn').onclick=e=>{sound=!sound;e.target.textContent=sound?'🔊 Som ativo':'🔇 Som off'};
+document.getElementById('peekBtn').onclick=()=>{const w=window.open(img,'_blank');};
+document.getElementById('upload').onchange=e=>{const f=e.target.files[0];if(!f)return;const url=URL.createObjectURL(f);img=url;document.getElementById('previewImg').src=url;document.getElementById('imgName').textContent='Sua foto';document.getElementById('imgHint').textContent='Sua foto escolhida';render()};
 document.addEventListener('keydown',e=>{const eIdx=tiles.indexOf(0);const map={'ArrowUp':eIdx+size,'ArrowDown':eIdx-size,'ArrowLeft':eIdx+1,'ArrowRight':eIdx-1};if(map[e.key]!==undefined){e.preventDefault();tryMove(map[e.key])}});
 reset();
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
